@@ -252,6 +252,10 @@
       {
         "command": "ansible.lightspeed.feedback",
         "title": "Ansible Lightspeed: Feedback"
+      },
+      {
+        "command": "ansible.lightspeed.showPlaybookGenerationPage",
+        "title": "Show Playbook Generation Page"
       }
     ],
     "configuration": [
@@ -490,6 +494,13 @@
             "type": "string",
             "markdownDescription": "Model ID to override your organization's default model. This setting is only applicable to commercial users with an Ansible Lightspeed seat assignment.",
             "order": 3
+          },
+          "ansible.lightspeed.playbookGeneration.enabled": {
+            "scope": "resource",
+            "type": "boolean",
+            "default": false,
+            "markdownDescription": "Enable playbook generation feature.",
+            "order": 4
           }
         }
       },
