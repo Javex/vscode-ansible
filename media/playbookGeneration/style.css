@@ -1,0 +1,31 @@
+.playbookGeneration>h2 {
+  text-align: center
+}
+
+.playbookGeneration>h4 {
+  text-align: center
+}
+
+.editArea {
+  width: 90%;
+  height: 600px;
+  border-style: solid;
+}
+
+.editArea>textarea {
+  width: 100%;
+  height: 90%;
+  border-style: none;
+}
+
+.editArea>button {
+  float: right;
+}
+
+.inputArea {
+  width: 90%
+}
+
+.inputArea>input {
+  width: 100%
+}

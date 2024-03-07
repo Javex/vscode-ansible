@@ -67,6 +67,7 @@ import { AnsibleCreatorInit } from "./features/contentCreator/initPage";
 import { withInterpreter } from "./features/utils/commandRunner";
 import { IFileSystemWatchers } from "./interfaces/watchers";
 import { LightspeedAuthSession } from "./interfaces/lightspeed";
+import { getWebviewContent, openNewPlaybookEditor, showPlaybookGenerationPage } from "./features/playbookGeneration/playbookGenerationPage";
 
 export let client: LanguageClient;
 export let lightSpeedManager: LightSpeedManager;
@@ -442,6 +443,12 @@ export async function activate(context: ExtensionContext): Promise<void> {
       window.showInformationMessage("This feature is coming soon. Stay tuned.");
     })
   );
+
+  // Command to render a webview-based note view
+  const openNote = vscode.commands.registerCommand("ansible.lightspeed.showPlaybookGenerationPage", () => {
+    showPlaybookGenerationPage(context.extensionUri);
+  });
+  context.subscriptions.push(openNote);
 }
 
 const startClient = async (
