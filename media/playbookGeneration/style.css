@@ -54,10 +54,11 @@
 }
 
 .biggerButton {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
+  margin: 0.2em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
 }
 
 
@@ -78,18 +79,26 @@
   bottom: 3px;
 }
 
+.editUndoFeedbackContainer {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  display: none;
+}
+
 .editUndoContainer {
   position: absolute;
   left: 20px;
   bottom: 20px;
-  display: none;
+  display: block;
 }
 
 .feedbackContainer {
   position: absolute;
   right: 22px;
   bottom: 20px;
-  display: none;
+  display: flex;
 }
 
 .createPlaybookContainer {
@@ -102,6 +111,11 @@
 
 .examplesContainer {
   margin-top: 1em;
+}
+
+.examplesButtonContainer {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .continueButtonContainer {
@@ -124,4 +138,12 @@
 
 .textFieldFullWidth {
   width: 100%;
+}
+
+.awsExample {
+  display: flex;
+}
+
+.azureExample {
+  display: none;
 }

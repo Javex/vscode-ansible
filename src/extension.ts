@@ -450,10 +450,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
   );
 
   // Command to render a webview-based note view
-  const openNote = vscode.commands.registerCommand("ansible.lightspeed.showPlaybookGenerationPage", () => {
-    showPlaybookGenerationPage(context.extensionUri);
-  });
-  context.subscriptions.push(openNote);
+  context.subscriptions.push(
+    vscode.commands.registerCommand("ansible.lightspeed.showPlaybookGenerationPage", () => {
+      showPlaybookGenerationPage(context.extensionUri);
+    })
+  );
+
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("ansible.lightspeed.thumbsUpDown", () => {
+      window.showInformationMessage("Thank you for your feedback!");
+    })
+  );
 }
 
 const startClient = async (

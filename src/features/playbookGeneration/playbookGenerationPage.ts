@@ -11,28 +11,30 @@ export function openNewPlaybookEditor() {
   # Create an azure network...
   #   Description: "Create an azure network peering between VNET named VNET_1 and VNET named VNET_2"
   #   This playbook will perform the following tass by this order:
-  #  
+  #
   #     1. Create VNET named VNET_1
   #     2. Create VNET named VNET_2
   #     3. Create virtual network peering
   - name: Create an azure network...
     hosts: all
+    vars:
+      resource_group: MY_RESOURCE_GROUP
     tasks:
       - name: Create VNET named VNET_1
         azure.azcollection.azure_rm_virtualnetwork:
-          resource_group: "{{ _resource_group_ }}"
+          resource_group: "{{ resource_group }}"
           name: VNET_1
           address_prefixes: 10.10.0.60/16
-  
+
       - name: Create VNET named VNET_2
         azure.azcollection.azure_rm_virtualnetwork:
-          resource_group: "{{ _resource_group_ }}"
+          resource_group: "{{ resource_group }}"
           name: VNET_2
           address_prefixes: 10.10.0.80/16
-  
+
       - name: Create virual network peering
         azure.azcollection.azure_rm_virtualnetworkpeering:
-          resource_group: "{{ _resource_group_ }}"
+          resource_group: "{{ resource_group }}"
           name: VNET_1_2
           virtual_network:
             name: VNET_2
@@ -88,7 +90,11 @@ export function showPlaybookGenerationPage(extensionUri: vscode.Uri) {
       case "createPlaybook":
         openNewPlaybookEditor();
         panel?.dispose();
-        break
+        break;
+      case "thumbsUp":
+      case "thumbsDown":
+        vscode.commands.executeCommand("ansible.lightspeed.thumbsUpDown");
+        break;
     }
   });
 
@@ -144,28 +150,38 @@ export function getWebviewContent(webview: Webview, extensionUri: Uri, index=1) 
                     <span class="codicon codicon-run-all"></span>
                 </vscode-button>
             </vscode-text-area>
-            <div class="editUndoContainer">
-                <vscode-button class="buttonBorder" appearance="secondary" id="edit-button">
-                    Edit
-                </vscode-button>
-                <vscode-button class="buttonBorder" appearance="secondary" id="undo-button">
-                    Undo
-                </vscode-button>
-            </div>
-            <div class="feedbackContainer">
-                <vscode-button class="iconButton" appearance="icon" id="thumbsup-button">
-                    <span class="codicon codicon-thumbsup"></span>
-                </vscode-button>
-                <vscode-button class="iconButton" appearance="icon" id="thumbsdown-button">
-                    <span class="codicon codicon-thumbsdown"></span>
-                </vscode-button>
+            <div class="editUndoFeedbackContainer">
+              <div class="editUndoContainer">
+                  <vscode-button class="buttonBorder" appearance="secondary" id="edit-button">
+                      Edit
+                  </vscode-button>
+                  <vscode-button class="buttonBorder" appearance="secondary" id="undo-button">
+                      Undo
+                  </vscode-button>
+              </div>
+              <div class="feedbackContainer">
+                  <vscode-button class="iconButton" appearance="icon" id="thumbsup-button">
+                      <span class="codicon codicon-thumbsup"></span>
+                  </vscode-button>
+                  <vscode-button class="iconButton" appearance="icon" id="thumbsdown-button">
+                      <span class="codicon codicon-thumbsdown"></span>
+                  </vscode-button>
+              </div>
             </div>
         </div>
         <div class="examplesContainer">
             <h4>Examples</h4>
-            <vscode-button class="biggerButton" appearance="secondary">
-                Create an EC2 instance on AWS
-            </vscode-button>
+            <div class="examplesButtonContainer">
+              <vscode-button class="biggerButton awsExample" id="aws-example" appearance="secondary">
+                  Create an EC2 instance on AWS
+              </vscode-button>
+              <vscode-button class="biggerButton azureExample" id="azure-example1" appearance="secondary">
+                  Create VNET peering on Azure
+              </vscode-button>
+              <vscode-button class="biggerButton azureExample" id="azure-example2" appearance="secondary">
+                  Create a network interface with VNET
+              </vscode-button>
+            </div>
             <div class="restartButtonContainer">
                 <vscode-button class="iconButton" appearance="icon" id="restart-button">
                     <span class="codicon codicon-debug-restart"></span>
@@ -187,7 +203,7 @@ export function getWebviewContent(webview: Webview, extensionUri: Uri, index=1) 
   const html2 = /*html*/ `
   <!DOCTYPE html>
   <html lang="en">
-  
+
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,7 +213,7 @@ export function getWebviewContent(webview: Webview, extensionUri: Uri, index=1) 
       <link rel="stylesheet" href="${styleUri}">
       <title>Playbook</title>
   </head>
-  
+
   <body>
       <div class="playbookGeneration">
           <h2>Create a playbook</h2>
@@ -233,7 +249,7 @@ export function getWebviewContent(webview: Webview, extensionUri: Uri, index=1) 
       </div>
       <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
   </body>
-  
+
   </html>
   `;
 

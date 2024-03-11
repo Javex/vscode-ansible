@@ -19,12 +19,35 @@ provideVSCodeDesignSystem().register(
 
 const vscode = acquireVsCodeApi();
 
+const sampleDescription = `Create an azure network peering between VNET named VNET_A and VNET named VNET_B`;
+
+const sampleSuggestion = `Name: "Create an azure network..."
+Description: "Create an azure network peering between VNET named VNET_1 and VNET named VNET_2"
+This playbook will perform the following tass by this order:
+
+  1. Create VNET named VNET_1
+  2. Create VNET named VNET_2
+  3. Create virtual network peering
+`;
+
 window.addEventListener("load", main);
+
+const FAKE_DELAY = 2000;
+
+async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function pause(): Promise<void> {
+  return sleep(FAKE_DELAY);
+}
 
 function setListener(id: string, func: Function) {
   const button = document.getElementById(id) as Button;
   if (button) {
-    button.addEventListener("click", () => func());
+    button.addEventListener("click", async () => {
+      await func()
+    });
   }
 }
 
@@ -35,8 +58,11 @@ function main() {
   setListener("undo-button", undoSuggestion);
   setListener('thumbsup-button', sendThumbsup);
   setListener("thumbsdown-button", sendThumbsdown);
-  setListener("restart-button", restartInput);
+  setListener("restart-button", updateExamples);
   setListener("continue-button", updateHtml);
+  setListener("azure-example1", updateDescription);
+  setListener("azure-example2", updateDescription);
+  setListener("aws-example", updateDescriptionAWS);
 }
 
 function changeDisplay(className: string, displayState: string) {
@@ -47,28 +73,23 @@ function changeDisplay(className: string, displayState: string) {
   }
 }
 
-function submitInput() {
+async function submitInput() {
   changeDisplay("bigIconButton", "none");
   changeDisplay("examplesContainer", "none");
-  changeDisplay("editUndoContainer", "block");
-  changeDisplay("feedbackContainer", "flex");
+  changeDisplay("editUndoFeedbackContainer", "block");
   changeDisplay("continueButtonContainer", "block");
 
-  const sampleSuggestion = `Name: "Create an azure network...
-  Description: "Create an azure network peering between VNET named VNET_1 and VNET named VNET_2"
-  This playbook will perform the following tass by this order:
-  
-    1. Create VNET named VNET_1
-    2. Create VNET named VNET_2
-    3. Create virtual network peering
-  `;
-
   const element = document.getElementById("playbook-text-area") as TextArea;
+  element.value = "";
+
+  await pause();
+
   element.value = sampleSuggestion;
   element.readOnly = true;
 }
 
-function createPlaybook() {
+async function createPlaybook() {
+  await pause();
   vscode.postMessage({ command: "createPlaybook" });
 }
 
@@ -78,21 +99,33 @@ function editInput() {
 }
 
 function undoSuggestion() {
-
+  /* no-op */
 }
 
 function sendThumbsup() {
-
+  vscode.postMessage({ command: "thumbsUp" });
 }
 
 function sendThumbsdown() {
-
+  vscode.postMessage({ command: "thumbsDown" });
 }
 
-function restartInput() {
-
+async function updateExamples() {
+  changeDisplay("awsExample", "none");
+  await pause();
+  changeDisplay("azureExample", "flex");
 }
 
-function updateHtml() {
+function updateDescription() {
+  const element = document.getElementById("playbook-text-area") as TextArea;
+  element.value = sampleDescription;
+}
+
+function updateDescriptionAWS() {
+  /* no-op */
+}
+
+async function updateHtml() {
+  await pause();
   vscode.postMessage({ command: "updateHtml" });
 }

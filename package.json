@@ -256,6 +256,10 @@
       {
         "command": "ansible.lightspeed.showPlaybookGenerationPage",
         "title": "Show Playbook Generation Page"
+      },
+      {
+        "command": "ansible.lightspeed.thumbsUpDown",
+        "title": "Send Lightspeed Thumbs Up/Down Feedback"
       }
     ],
     "configuration": [
