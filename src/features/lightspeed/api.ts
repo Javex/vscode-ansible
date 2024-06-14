@@ -9,7 +9,6 @@ import {
   FeedbackResponseParams,
   ContentMatchesRequestParams,
   ContentMatchesResponseParams,
-  IError,
 } from "../../interfaces/lightspeed";
 import {
   LIGHTSPEED_SUGGESTION_CONTENT_MATCHES_URL,
@@ -20,7 +19,8 @@ import {
 import { getBaseUri } from "./utils/webUtils";
 import { ANSIBLE_LIGHTSPEED_API_TIMEOUT } from "../../definitions/constants";
 import { UserAction } from "../../definitions/lightspeed";
-import { mapError } from "./handleApiError";
+import { IError } from "@ansible/ansible-language-server/src/interfaces/lightspeedApi";
+import { mapError } from "@ansible/ansible-language-server/src/utils/handleApiError";
 import { lightSpeedManager } from "../../extension";
 import { LightspeedUser } from "./lightspeedUser";
 
