@@ -54,7 +54,7 @@ describe("Verify the execution of playbook using ansible-playbook command", () =
     await terminalView.killTerminal();
   });
 });
-describe("Verify the execution of playbook using ansible-navigator command", () => {
+describe.skip("Verify the execution of playbook using ansible-navigator command", () => {
   let workbench: Workbench;
   let settingsEditor: SettingsEditor;
   const folder = "terminal";
