@@ -160,6 +160,7 @@ tasks:
     desc: Run UI tests {{.XVFB}}
     aliases: [ui]
     cmds:
+      - echo "NODE_OPTIONS=${NODE_OPTIONS}"
       - yarn webpack-dev
       - "{{.VIRTUAL_ENV}}/bin/python3 --version"
       - bash -c 'rm -rf ./out/test-resources ./out/ext'

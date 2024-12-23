@@ -186,6 +186,10 @@ jobs:
           asdf exec direnv exec . bash -c 'echo "VIRTUAL_ENV=${VIRTUAL_ENV}"' >> "$GITHUB_ENV"
           asdf exec direnv exec . bash -c 'echo "${VIRTUAL_ENV}/bin"' >> "$GITHUB_PATH"
 
+          # https://github.com/direnv/direnv/wiki/GitHubActions
+          asdf exec direnv exec . sh -c 'echo $PATH' > "$GITHUB_PATH"
+          asdf exec direnv export gha >> "$GITHUB_ENV"
+
       - name: Ensure virtualenv is active (direnv)
         if: ${{ !contains(matrix.shell, 'wsl') }}
         run: |
@@ -227,7 +231,6 @@ jobs:
       - name: task package
         id: package
         run: |
-            export NODE_OPTIONS="--max-old-space-size=8192"
             task package ${{ matrix.env.TASKFILE_ARGS }}
 
       - name: task ${{ matrix.task-name }}
